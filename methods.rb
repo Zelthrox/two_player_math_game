@@ -1,3 +1,5 @@
+require './Player.rb'
+require './player_database.rb'
 
 #ask user if they would like to play a game
 def play_game?
@@ -5,7 +7,6 @@ def play_game?
   while keep_asking == true  
     puts "Do you want to start a new game? [Y]es? [N]o"
     answer = gets.chomp.downcase
-    # byebug
     if valid_yes_no?(answer) && (answer == 'y' || answer == 'yes')
       keep_asking = false
       return true
@@ -18,9 +19,13 @@ def play_game?
 end
 
 #is the answer a valid yes or no
+# make array of acceptable answers
+# check index for answer >= 0 (if >=0 it contains in arry)
 def valid_yes_no? (answer)
-  (answer == 'y' || answer == 'yes' || answer == 'n' || answer =='no') ? true : false
-end
+#  (answer == 'y' || answer == 'yes' || answer == 'n' || answer =='no') ? true : false
+  accept = ['y', 'yes', 'n', 'no'] 
+  accept.index(answer) >= 0  ? true : false           
+end                                             
 
 #promt players to setup player profile or get an old one
 def init_player_profile (input_name)
@@ -68,18 +73,12 @@ def update_player_score_life (correct, curr_player)
     curr_player.lose_point
     curr_player.lose_life
   end
+  return 0
 end
 
 def update_player_database (player1, player2)
-  @player_database.each do |player|
-    case player
-    when player1
-      ind = @player_database.index(player)
-      @player_database[ind] = player1
-    when player2
-      ind = @player_database.index(player)
-      @player_database[ind] = player2
-    end
-  end
+  @player_database[@player_database.index(player1)] = player1
+  @player_database[@player_database.index(player2)] = player2
+  
   return 0
 end
